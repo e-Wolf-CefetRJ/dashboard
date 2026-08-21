@@ -7,7 +7,7 @@
 
   const DEFAULT_CFG = {
     host: 'broker.mqtt-dashboard.com',
-    port: 8884,        // WS sem TLS
+    port: 8000,        // WS sem TLS
     tls: false,         // se true => wss
     path: '/mqtt',
     cid: 'ewolf-dashboard',
