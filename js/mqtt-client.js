@@ -72,8 +72,14 @@
       client = null;
     }
 
-    const proto = cfg.tls ? 'wss' : 'ws';
-    const url = `${proto}://${cfg.host}:${cfg.port}${cfg.path}`;
+    const isHttps = window.location.protocol === 'https:';
+
+    const useTls = cfg.tls || isHttps;
+    const port = isHttps ? 8084 : cfg.port;
+    const proto = useTls ? 'wss' : 'ws';
+
+    const url = `${proto}://${cfg.host}:${port}${cfg.path}`;
+    
     const options = {
       clientId: `${cfg.cid}-${Date.now()}`,
       clean: true,
