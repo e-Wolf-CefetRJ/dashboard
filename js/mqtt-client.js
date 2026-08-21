@@ -68,56 +68,64 @@
 
   function connect() {
     if (client) {
-      try { client.end(true); } catch (e) { /* ignore */ }
-      client = null;
+        try { client.end(true); } catch (e) {}
+        client = null;
     }
 
-    const isHttps = window.location.protocol === 'https:';
-
-    const useTls = cfg.tls || isHttps;
-    const port = isHttps ? 8884 : cfg.port;
+    const useTls = cfg.tls;
+    const port = cfg.port;
     const proto = useTls ? 'wss' : 'ws';
 
     const url = `${proto}://${cfg.host}:${port}${cfg.path}`;
-    
+
     const options = {
-      clientId: `${cfg.cid}-${Date.now()}`,
-      clean: true,
-      keepalive: 10,
-      reconnectPeriod: 1000,
-      connectTimeout: 30000
+        clientId: `${cfg.cid}-${Date.now()}`,
+        clean: true,
+        keepalive: 10,
+        reconnectPeriod: 1000,
+        connectTimeout: 30000
     };
 
     UI.setMqttStatus('err', 'MQTT: conectando…');
     UI.statusLine.textContent = 'Conectando em ' + url + ' …';
 
     try {
-      client = mqtt.connect(url, options);
+        client = mqtt.connect(url, options);
     } catch (e) {
-      UI.statusLine.textContent = 'Erro ao criar cliente MQTT: ' + e;
-      return;
+        UI.statusLine.textContent = 'Erro ao criar cliente MQTT: ' + e;
+        return;
     }
 
     client.on('connect', () => {
-      UI.setMqttStatus('ok', 'MQTT: conectado');
-      UI.statusLine.textContent = 'Assinando ' + cfg.topicTlm + '…';
-      client.subscribe(cfg.topicTlm, { qos: 0 }, (err) => {
-        UI.statusLine.textContent = err
-          ? 'Erro ao assinar tópico de telemetria'
-          : 'Recebendo telemetria em ' + cfg.topicTlm;
-      });
+        UI.setMqttStatus('ok', 'MQTT: conectado');
+
+        UI.statusLine.textContent =
+            'Assinando ' + cfg.topicTlm + '…';
+
+        client.subscribe(cfg.topicTlm, { qos: 0 }, (err) => {
+            UI.statusLine.textContent = err
+                ? 'Erro ao assinar tópico de telemetria'
+                : 'Recebendo telemetria em ' + cfg.topicTlm;
+        });
     });
 
-    client.on('reconnect', () => UI.setMqttStatus('err', 'MQTT: reconectando…'));
-    client.on('close', () => UI.setMqttStatus('err', 'MQTT: desconectado'));
-    client.on('error', (err) => {
-      UI.setMqttStatus('err', 'MQTT: erro');
-      console.error('MQTT error', err);
+    client.on('reconnect', () => {
+        UI.setMqttStatus('err', 'MQTT: reconectando…');
     });
+
+    client.on('close', () => {
+        UI.setMqttStatus('err', 'MQTT: desconectado');
+    });
+
+    client.on('error', (err) => {
+        UI.setMqttStatus('err', 'MQTT: erro');
+        console.error('MQTT error', err);
+    });
+
     client.on('message', handleMessage);
 
     UI.startStaleWatchdog(() => cfg.IV);
-  }
+}
 
   // Encerra a conexão de forma limpa ao fechar/recarregar a aba.
   window.addEventListener('beforeunload', () => {
