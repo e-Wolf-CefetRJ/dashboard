@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>E-Wolf Telemetry Dashboard (MQTT)</title>
+<link rel="stylesheet" href="./css/styles.css"/>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <h1>
+      E-Wolf Telemetry MQTT
+      <span id="mqttBadge" class="badge">
+        <span class="dot" id="mqttDot"></span>
+        <span id="mqttText">MQTT: desconectado</span>
+      </span>
+      <span class="badge">
+        fonte: <span id="srcText" style="font-weight:600;margin-left:4px">?</span>
+      </span>
+      <span class="badge">
+        override: <span id="ovrText" style="font-weight:600;margin-left:4px">?</span>
+      </span>
+      <span class="badge" id="motorBadge">motor: ?</span>
+      <span class="badge" id="ackBadge">ack: —</span>
+    </h1>
+
+    <!-- Métricas principais -->
+    <div class="grid-metrics">
+      <div class="metric"><h2>Tensão da bateria</h2><div class="val"><span id="v">--</span><span class="unit">V</span></div></div>
+      <div class="metric"><h2>Aceleração</h2><div class="val"><span id="p">--</span><span class="unit">%</span></div></div>
+      <div class="metric"><h2>Temperatura</h2><div class="val"><span id="t">--</span><span class="unit">°C</span></div></div>
+      <div class="metric"><h2>Umidade</h2><div class="val"><span id="h">--</span><span class="unit">%</span></div></div>
+      <div class="metric"><h2>RPM</h2><div class="val"><span id="rpm">--</span><span class="unit">rpm</span></div></div>
+      <div class="metric"><h2>Velocidade</h2><div class="val"><span id="spd">--</span><span class="unit">km/h</span></div></div>
+      <div class="metric"><h2>Corrente bateria</h2><div class="val"><span id="ibat">--</span><span class="unit">A</span></div></div>
+      <div class="metric"><h2>Corrente motor</h2><div class="val"><span id="imot">--</span><span class="unit">A</span></div></div>
+      <div class="metric">
+        <h2>Relação Ibatt / Imot</h2>
+        <div class="val"><span id="iratio">--</span></div>
+        <div class="muted">Ajuda a enxergar perdas / eficiência do conjunto.</div>
+      </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="section">
+      <h3>Gráficos</h3>
+      <div class="canvas-grid">
+        <div class="chart"><h4>Volts</h4><canvas id="cvV"></canvas></div>
+        <div class="chart"><h4>Aceleração (%)</h4><canvas id="cvP"></canvas></div>
+        <div class="chart"><h4>Velocidade (km/h)</h4><canvas id="cvS"></canvas></div>
+        <div class="chart"><h4>Ibateria (A)</h4><canvas id="cvIB"></canvas></div>
+        <div class="chart"><h4>Temperatura (°C)</h4><canvas id="cvT"></canvas></div>
+        <div class="chart"><h4>Umidade (%)</h4><canvas id="cvH"></canvas></div>
+        <div class="chart"><h4>RPM</h4><canvas id="cvR"></canvas></div>
+        <div class="chart"><h4>Imotor (A)</h4><canvas id="cvIM"></canvas></div>
+        <div class="chart"><h4>Ib/Im (adim.)</h4><canvas id="cvIR"></canvas></div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h3>Status e Ações</h3>
+      <div class="controls-row">
+        <span class="muted" id="statusLine">Aguardando conexão MQTT…</span>
+      </div>
+      <div class="controls-row muted" id="msgMetaRow">
+        <span>Última mensagem: <b id="lastMsg">--</b></span>
+        <span style="margin-left:auto">Intervalo mínimo: <b><span id="intervalTxt">--</span> ms</b></span>
+      </div>
+      <div class="controls-row" style="margin-top:8px">
+        <a class="btn-blue" href="./accelerator_config_mqtt.html" style="text-decoration:none;display:inline-flex;align-items:center">
+          Abrir configurador de acelerador
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="./js/config.js"></script>
+<script src="./js/charts.js"></script>
+<script src="./js/ui.js"></script>
+<script src="./js/mqtt-client.js"></script>
+<script src="./js/main.js"></script>
+</body>
+</html>
