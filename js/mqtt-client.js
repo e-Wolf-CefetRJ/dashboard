@@ -75,7 +75,7 @@
     const isHttps = window.location.protocol === 'https:';
 
     const useTls = cfg.tls || isHttps;
-    const port = isHttps ? 8084 : cfg.port;
+    const port = isHttps ? 8884 : cfg.port;
     const proto = useTls ? 'wss' : 'ws';
 
     const url = `${proto}://${cfg.host}:${port}${cfg.path}`;
