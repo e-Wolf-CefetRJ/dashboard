@@ -15,7 +15,7 @@
     IV: 250              // intervalo mínimo entre atualizações de UI (ms)
   };
 
-  const LS_KEY = 'ewolf_mqtt_cfg_v1';
+  const LS_KEY = 'ewolf_mqtt_cfg_v2';
 
   // Ranges fixos (não adaptativos) de cada gráfico.
   // Ajuste estes valores para bater com o hardware real (ex.: pack de bateria,
