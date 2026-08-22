@@ -66,7 +66,7 @@
     drawAll();
   }
 
-  function connect() {
+function connect() {
   if (client) {
     try { client.end(true); } catch (e) { /* ignore */ }
     client = null;
