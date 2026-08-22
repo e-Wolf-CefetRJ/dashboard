@@ -6,8 +6,8 @@
   'use strict';
 
   const DEFAULT_CFG = {
-    host: 'broker.mqtt-dashboard.com',
-    port: 8000,        // WS sem TLS
+    host: 'broker.emqx.io',
+    port: 8083,        // WS sem TLS
     tls: false,         // se true => wss
     path: '/mqtt',
     cid: 'ewolf-dashboard',
